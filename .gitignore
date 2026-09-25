@@ -1,0 +1,68 @@
+# Python
+__pycache__/
+*.py[cod]
+*.so
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Virtual environments
+venv/
+.venv/
+env/
+.env
+*.env
+
+# Secrets / credentials
+*.key
+*.pem
+*.crt
+secrets/
+credentials/
+
+# Model weights / checkpoints
+models/
+*.safetensors
+*.bin
+*.pt
+*.pth
+*.ckpt
+*.gguf
+
+# Datasets / generated data
+data/
+*.csv
+*.jsonl
+*.parquet
+
+# Logs
+logs/
+*.log
+
+# Jupyter
+.ipynb_checkpoints/
+
+# IDE / OS
+.vscode/
+.idea/
+.DS_Store
+
+# CUDA / installers / large binaries
+*.deb
+*.rpm
+*.tar
+*.tar.gz
+
+# Build / temporary files
+build/
+dist/
+tmp/
+temp/
+
+# Coverage
+.coverage
+htmlcov/
+
+# Local runtime files
+*.pid
