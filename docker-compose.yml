@@ -1,0 +1,61 @@
+services:
+  vllm:
+    image: vllm/vllm-openai:v0.11.0
+    container_name: arabic-enterprise-vllm
+    command:
+      - --model
+      - /models/arabic-merged
+      - --host
+      - 0.0.0.0
+      - --port
+      - "8000"
+      - --gpu-memory-utilization
+      - "0.79"
+      - --max-model-len
+      - "256"
+      - --max-num-seqs
+      - "1"
+      - --max-num-batched-tokens
+      - "256"
+      - --enforce-eager
+    volumes:
+      - ./models/arabic-merged:/models/arabic-merged:ro
+    ports:
+      - "8000:8000"
+    environment:
+      - HF_HUB_OFFLINE=1
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities:
+                - gpu
+    healthcheck:
+      test:
+        - CMD
+        - curl
+        - -f
+        - http://localhost:8000/health
+      interval: 15s
+      timeout: 10s
+      retries: 10
+      start_period: 120s
+
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: arabic-enterprise-llm:1.2
+    container_name: arabic-enterprise-llm
+    environment:
+      VLLM_URL: http://vllm:8000
+      MODEL_PATH: /app/models/arabic-merged
+      PYTHONPATH: /app
+    ports:
+      - "8080:8080"
+    depends_on:
+      vllm:
+        condition: service_healthy
+    restart: unless-stopped

@@ -1,3 +1,4 @@
+import os
 from time import perf_counter, time
 from collections import defaultdict, deque
 import threading
@@ -9,7 +10,7 @@ from prometheus_client import Counter, Histogram, generate_latest, CONTENT_TYPE_
 from pydantic import BaseModel, Field, field_validator, model_validator
 from src.security.privacy_controls import prepare_prompt
 
-VLLM_URL = "http://127.0.0.1:8000"
+VLLM_URL = os.getenv("VLLM_URL", "http://127.0.0.1:8000")
 
 app = FastAPI(
     title="Arabic Enterprise LLM API",
